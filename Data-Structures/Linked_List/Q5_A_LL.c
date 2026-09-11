@@ -11,28 +11,28 @@ Purpose: Implementing the required functions for Question 5 */
 
 //////////////////////////////////////////////////////////////////////////////////
 
-typedef struct _listnode{
+typedef struct _listnode
+{
 	int item;
 	struct _listnode *next;
-} ListNode;			// You should not change the definition of ListNode
+} ListNode; // You should not change the definition of ListNode
 
-typedef struct _linkedlist{
+typedef struct _linkedlist
+{
 	int size;
 	ListNode *head;
-} LinkedList;			// You should not change the definition of LinkedList
-
+} LinkedList; // You should not change the definition of LinkedList
 
 ///////////////////////// function prototypes ////////////////////////////////////
 
 // You should not change the prototype of this function
-void frontBackSplitLinkedList(LinkedList* ll, LinkedList *resultFrontList, LinkedList *resultBackList);
+void frontBackSplitLinkedList(LinkedList *ll, LinkedList *resultFrontList, LinkedList *resultBackList);
 
 void printList(LinkedList *ll);
 void removeAllItems(LinkedList *l);
-ListNode * findNode(LinkedList *ll, int index);
+ListNode *findNode(LinkedList *ll, int index);
 int insertNode(LinkedList *ll, int index, int value);
 int removeNode(LinkedList *ll, int index);
-
 
 ///////////////////////////// main() /////////////////////////////////////////////
 
@@ -42,11 +42,11 @@ int main()
 	LinkedList ll;
 	LinkedList resultFrontList, resultBackList;
 
-	//Initialize the linked list as an empty linked list
+	// Initialize the linked list as an empty linked list
 	ll.head = NULL;
 	ll.size = 0;
 
-	//Initialize the front linked list as an empty linked list
+	// Initialize the front linked list as an empty linked list
 	resultFrontList.head = NULL;
 	resultFrontList.size = 0;
 
@@ -60,7 +60,7 @@ int main()
 
 	while (c != 0)
 	{
-	    printf("Please input your choice(1/2/0): ");
+		printf("Please input your choice(1/2/0): ");
 		scanf("%d", &c);
 
 		switch (c)
@@ -104,30 +104,34 @@ void frontBackSplitLinkedList(LinkedList *ll, LinkedList *resultFrontList, Linke
 {
 	/* add your code here */
 	int back_size = (ll->size) / 2, front_size = (ll->size) - back_size; // back_size는 소수점이 버림되므로 항상 front보다 작거나 같다
-	
-	if(front_size == ll->size){ // 0, 1개인 경우,, 
+
+	if (front_size == ll->size)
+	{ // 0, 1개인 경우,,
 		resultFrontList->head = ll->head;
 		resultFrontList->size = ll->size;
-		return;
+	}
+	else
+	{
+		ListNode *front_end_node = findNode(ll, front_size - 1), *back_start_node = front_end_node->next;
+
+		resultFrontList->size = front_size;
+		resultFrontList->head = ll->head;
+		front_end_node->next = NULL;
+
+		resultBackList->size = back_size;
+		resultBackList->head = back_start_node;
 	}
 
-	ListNode *front_end_node = findNode(ll, front_size-1), *back_start_node = front_end_node->next;
-
-	resultFrontList->size = front_size;
-	resultFrontList->head = ll->head;
-	front_end_node->next = NULL;
-
-	resultBackList->size = back_size;
-	resultBackList->head = back_start_node;
-	
-
-
-
+	// ll과 resultFrontList, resultBackList가 같은 노드들 가리키기 때문에 removeAllItems에서 double free 문제. 둘 중에 하나는 link 해제 해줘야.
+	// ll을 해주자.
+	ll->head = NULL;
+	ll->size = 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-void printList(LinkedList *ll){
+void printList(LinkedList *ll)
+{
 
 	ListNode *cur;
 	if (ll == NULL)
@@ -143,13 +147,13 @@ void printList(LinkedList *ll){
 	printf("\n");
 }
 
-
 void removeAllItems(LinkedList *ll)
 {
 	ListNode *cur = ll->head;
 	ListNode *tmp;
 
-	while (cur != NULL){
+	while (cur != NULL)
+	{
 		tmp = cur->next;
 		free(cur);
 		cur = tmp;
@@ -158,8 +162,8 @@ void removeAllItems(LinkedList *ll)
 	ll->size = 0;
 }
 
-
-ListNode * findNode(LinkedList *ll, int index){
+ListNode *findNode(LinkedList *ll, int index)
+{
 
 	ListNode *temp;
 
@@ -171,7 +175,8 @@ ListNode * findNode(LinkedList *ll, int index){
 	if (temp == NULL || index < 0)
 		return NULL;
 
-	while (index > 0){
+	while (index > 0)
+	{
 		temp = temp->next;
 		if (temp == NULL)
 			return NULL;
@@ -181,7 +186,8 @@ ListNode * findNode(LinkedList *ll, int index){
 	return temp;
 }
 
-int insertNode(LinkedList *ll, int index, int value){
+int insertNode(LinkedList *ll, int index, int value)
+{
 
 	ListNode *pre, *cur;
 
@@ -189,7 +195,8 @@ int insertNode(LinkedList *ll, int index, int value){
 		return -1;
 
 	// If empty list or inserting first node, need to update head pointer
-	if (ll->head == NULL || index == 0){
+	if (ll->head == NULL || index == 0)
+	{
 		cur = ll->head;
 		ll->head = malloc(sizeof(ListNode));
 		ll->head->item = value;
@@ -200,7 +207,8 @@ int insertNode(LinkedList *ll, int index, int value){
 
 	// Find the nodes before and at the target position
 	// Create a new node and reconnect the links
-	if ((pre = findNode(ll, index - 1)) != NULL){
+	if ((pre = findNode(ll, index - 1)) != NULL)
+	{
 		cur = pre->next;
 		pre->next = malloc(sizeof(ListNode));
 		pre->next->item = value;
@@ -212,8 +220,8 @@ int insertNode(LinkedList *ll, int index, int value){
 	return -1;
 }
 
-
-int removeNode(LinkedList *ll, int index){
+int removeNode(LinkedList *ll, int index)
+{
 
 	ListNode *pre, *cur;
 
@@ -222,7 +230,8 @@ int removeNode(LinkedList *ll, int index){
 		return -1;
 
 	// If removing first node, need to update head pointer
-	if (index == 0){
+	if (index == 0)
+	{
 		cur = ll->head->next;
 		free(ll->head);
 		ll->head = cur;
@@ -233,14 +242,15 @@ int removeNode(LinkedList *ll, int index){
 
 	// Find the nodes before and after the target position
 	// Free the target node and reconnect the links
-	if ((pre = findNode(ll, index - 1)) != NULL){
+	if ((pre = findNode(ll, index - 1)) != NULL)
+	{
 
 		if (pre->next == NULL)
 			return -1;
 
 		cur = pre->next;
 		pre->next = cur->next;
-		free(cur);
+		free(cur); // 만약 주소가 NULL이면 아무 것도 안함. 안전.
 		ll->size--;
 		return 0;
 	}
