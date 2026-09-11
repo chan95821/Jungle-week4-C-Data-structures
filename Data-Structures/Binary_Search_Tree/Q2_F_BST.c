@@ -90,7 +90,14 @@ int main()
 
 void inOrderTraversal(BSTNode *root)
 {
+	if (root == NULL )  return;
 	 /* add your code here */
+	Stack *stack = malloc(sizeof(Stack));
+
+	
+	
+
+	free(stack);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

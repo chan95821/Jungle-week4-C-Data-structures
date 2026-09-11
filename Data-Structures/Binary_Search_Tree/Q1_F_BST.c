@@ -93,8 +93,24 @@ int main()
 
 void levelOrderTraversal(BSTNode* root)
 {
+	if(root == NULL) return;
 
+	Queue *q = malloc(sizeof(Queue));
     /* add your code here */
+	
+	QueueNode **head = &(q->head), **tail = &(q->tail);  // TODO : 부자연스러운 느낌. 왜 그렇게 했는지/ 자연스러운 표현인지 확인 필요
+	enqueue(head, tail, root);
+	while (!isEmpty(q->head)) {
+		BSTNode *node = dequeue(head, tail);
+		printf("%d ", node->item);
+		if (node->left != NULL) {
+			enqueue(head, tail, node->left);
+		}
+		if (node->right != NULL) {
+			enqueue(head, tail, node->right);
+		}
+	}
+	free(q);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -120,7 +136,7 @@ void insertBSTNode(BSTNode **node, int value){
 		{
 			insertBSTNode(&((*node)->right), value);
 		}
-		else
+		else   // 같은 값은 중복 못넣는다.
 			return;
 	}
 }
