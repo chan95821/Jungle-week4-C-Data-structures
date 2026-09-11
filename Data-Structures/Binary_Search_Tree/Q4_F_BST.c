@@ -98,8 +98,12 @@ void postOrderIterativeS1(BSTNode *root)
 	/* add your code here */
 	Stack *s = malloc(sizeof(Stack));
 	BSTNode *cur = root;
-
+	while(cur != NULL) {
+		push(s, cur);
+		cur = cur->left;
+	}
 	while(!isEmpty(s)) {
+		cur = pop(s);
 		
 
 

@@ -103,6 +103,26 @@ int main()
 
 void alternateMergeLinkedList(LinkedList *ll1, LinkedList *ll2)
 {
+	// ll1 기준으로 하자
+	ListNode *cur1 = ll1->head, *cur2 = ll2->head;
+	if(cur1 == NULL || cur1->next == NULL)
+		return;
+
+	cur1 = cur1->next ; // idx가 1
+	for (int idx = 1; idx <= ll1->size; ){ // TODO : 끼워맞춘 느낌
+		if(cur2 != NULL){
+			insertNode(ll1, idx, cur2->item);
+			cur2 = cur2->next;
+			removeNode(ll2, 0);
+			
+		} else return;
+
+		if (cur1 != NULL){
+			cur1 = cur1->next; // idx는 2 증가해야하지만, cur1은 추가된 노드의 뒤이므로 하나만 건너뛴다
+		} else return;
+		
+		idx += 2;
+	}
     /* add your code here */
 }
 

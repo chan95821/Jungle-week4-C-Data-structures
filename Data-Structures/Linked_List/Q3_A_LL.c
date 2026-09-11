@@ -87,6 +87,24 @@ int main()
 void moveOddItemsToBack(LinkedList *ll)
 {
 	/* add your code here */
+	// remove 먼저 하면 마지막 idx 고정 -- 
+
+	int last_idx = ll->size;
+	int boundary = ll->size;
+	for(int idx = 0; idx < boundary;) {
+		// ll size가 이미 범위 제한하므로 NULL 확인 필요 없다
+		ListNode *cur = findNode(ll, idx); // cur을 직접 관리하지 않음.
+		if((cur->item) % 2 != 0) {
+			int odd_num = cur->item;
+
+			removeNode(ll, idx);
+			insertNode(ll, last_idx - 1, odd_num);
+			boundary--;
+		} else  // 만약 제거했다면 같은 idx가 다음 노드를 가리키기 때문에 idx++ 무조건 하면 건너뛴다.
+			idx++;
+
+	}
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

@@ -90,10 +90,27 @@ int main()
 
 void inOrderTraversal(BSTNode *root)
 {
+	
 	if (root == NULL )  return;
 	 /* add your code here */
+
+	 BSTNode *cur = root;
 	Stack *stack = malloc(sizeof(Stack));
 
+
+	while(cur != NULL){
+		push(stack, cur);
+		cur = cur->left;
+	}
+	while(!isEmpty(stack)) { // ... / 스택에서 pop 되는 원소는 오른쪽만 찾아보면 되는 상태로 설정해야 
+		cur = pop(stack);
+		printf("%d ", cur->item);
+		cur = cur->right;
+		while(cur != NULL){
+			push(stack, cur);
+			cur = cur->left;
+		}
+	}
 	
 	
 
