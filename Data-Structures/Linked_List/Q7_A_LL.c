@@ -93,10 +93,10 @@ void RecursiveReverse(ListNode **ptrHead)
 
 	ListNode *first_one = *ptrHead;
 	ListNode *next_one = first_one->next;
-	ListNode *last_one= first_one;
-	while(last_one->next != NULL){
-		last_one = last_one->next;
-	}
+	// ListNode *last_one= first_one; -> next_one 포인터가 재귀 호출 뒤 헤드로 바뀌어 버리므로 last_one과 같은 것을 가리킨다.
+	// while(last_one->next != NULL){
+	// 	last_one = last_one->next;
+	// }
 	ListNode *next_to_link = next_one;
 	first_one->next = NULL;
 	
@@ -104,7 +104,7 @@ void RecursiveReverse(ListNode **ptrHead)
 
 	next_to_link->next = first_one;
 
-	*ptrHead = last_one; // 
+	*ptrHead = next_one; // -> 의미가 바뀌어버리니, 이름 자체가 부적절.
 }
 
 //////////////////////////////////////////////////////////////////////////////////
