@@ -88,6 +88,23 @@ int main()
 void RecursiveReverse(ListNode **ptrHead)
 {
 	/* add your code here */
+
+	if((*ptrHead)->next == NULL) return;
+
+	ListNode *first_one = *ptrHead;
+	ListNode *next_one = first_one->next;
+	ListNode *last_one= first_one;
+	while(last_one->next != NULL){
+		last_one = last_one->next;
+	}
+	ListNode *next_to_link = next_one;
+	first_one->next = NULL;
+	
+	RecursiveReverse(&next_one); // next_one 포인터를 아예 바꿔 버리므로, next_to_link 복사본 필요
+
+	next_to_link->next = first_one;
+
+	*ptrHead = last_one; // 
 }
 
 //////////////////////////////////////////////////////////////////////////////////
