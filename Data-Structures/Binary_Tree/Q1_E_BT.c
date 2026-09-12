@@ -116,6 +116,14 @@ int main()
 int identical(BTNode *tree1, BTNode *tree2)
 
 {
+    if(tree1 == NULL && tree2 == NULL) return true;
+    else if(tree1 != NULL && tree2 != NULL); // 이때만 비교할 수 있다.
+    else return false; // xor 경우
+
+    if( (tree1->item == tree2->item) && identical(tree1->left, tree2->left) && identical(tree1->right, tree2->right) ) 
+        return true;
+    else return false;
+
    /* add your code here */
 }
 

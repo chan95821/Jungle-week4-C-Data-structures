@@ -101,7 +101,7 @@ void moveEvenItemsToBack(LinkedList *ll)
 			insertNode(ll, last_idx - 1, odd_num);
 			boundary--;
 		}
-		else // 만약 제거했다면 같은 idx가 다음 노드를 가리키기 때문에 idx++ 무조건 하면 건너뛴다.
+		else // 만약 제거했다면 같은 idx가 다음 노드를 가리키기 때문에 idx++ 무조건 하면 건너뛰어버린다.
 			idx++;
 	}
 }

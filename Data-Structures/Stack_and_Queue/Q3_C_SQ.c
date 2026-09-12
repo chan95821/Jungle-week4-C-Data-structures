@@ -103,6 +103,17 @@ int main()
 
 int isStackPairwiseConsecutive(Stack *s)
 {
+	if((s->ll).size % 2 != 0) return 0;
+
+	while(!isEmptyStack(s)){ // 짝수 개 경우만 있다.
+		int arr[2] = {pop(s), pop(s)};
+		
+		if(arr[0] - 1 == arr[1] || arr[0] + 1 == arr[1])
+			continue;
+		else return 0;
+	}
+	return 1;
+
   /* add your code here */
 }
 
