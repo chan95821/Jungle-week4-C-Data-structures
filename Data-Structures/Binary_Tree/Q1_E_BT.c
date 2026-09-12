@@ -117,8 +117,11 @@ int identical(BTNode *tree1, BTNode *tree2)
 
 {
     if(tree1 == NULL && tree2 == NULL) return true;
-    else if(tree1 != NULL && tree2 != NULL); // 이때만 비교할 수 있다.
-    else return false; // xor 경우
+    // else if(tree1 != NULL && tree2 != NULL); // 이때만 비교할 수 있다. 
+    // else return false; // xor 경우                                          -> 가독성 떨어진다.
+
+    if(tree1 == NULL || tree2 == NULL) return false; // 이미 둘 다 null 인 경우가 처리되었고, 둘 다 false일 때(둘 다 온전한 노드일때만) 다음 비교 수행. 나머지 경우는 XOR이고, false여야 한다.
+    
 
     if( (tree1->item == tree2->item) && identical(tree1->left, tree2->left) && identical(tree1->right, tree2->right) ) 
         return true;

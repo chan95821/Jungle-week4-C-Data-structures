@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 /* CE1007/CZ1007 Data Structures
-Lab Test: Section C - Stack and Queue Questions
+Lab Test: Section A - Linked List Questions
 Purpose: Implementing the required functions for Question 2 */
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -9,63 +9,51 @@ Purpose: Implementing the required functions for Question 2 */
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MIN_INT -1000
 //////////////////////////////////////////////////////////////////////////////////
 
 typedef struct _listnode
 {
 	int item;
 	struct _listnode *next;
-} ListNode;	// You should not change the definition of ListNode
+} ListNode;			// You should not change the definition of ListNode
 
 typedef struct _linkedlist
 {
 	int size;
 	ListNode *head;
-} LinkedList;	// You should not change the definition of LinkedList
+} LinkedList;			// You should not change the definition of LinkedList
 
-typedef struct _stack
-{
-	LinkedList ll;
-}Stack;  // You should not change the definition of Stack
 
-///////////////////////// function prototypes ////////////////////////////////////
+//////////////////////// function prototypes /////////////////////////////////////
 
-// You should not change the prototypes of these functions
-void createStackFromLinkedList(LinkedList *ll , Stack *stack);
-void removeEvenValues(Stack *s);
-
-void push(Stack *s , int item);
-int pop(Stack *s);
-int isEmptyStack(Stack *s);
-void removeAllItemsFromStack(Stack *s);
+// You should not change the prototype of this function
+void alternateMergeLinkedList(LinkedList *ll1, LinkedList *ll2);
 
 void printList(LinkedList *ll);
-ListNode * findNode(LinkedList *ll, int index);
+void removeAllItems(LinkedList *ll);
+ListNode *findNode(LinkedList *ll, int index);
 int insertNode(LinkedList *ll, int index, int value);
 int removeNode(LinkedList *ll, int index);
-void removeAllItems(LinkedList *ll);
+
 
 //////////////////////////// main() //////////////////////////////////////////////
 
 int main()
 {
-	int c, i;
-	LinkedList ll;
-	Stack s;
-
+	LinkedList ll1, ll2;
+	int c, i, j;
 	c = 1;
-	// Initialize the linked list as an empty linked list
-	ll.head = NULL;
-	ll.size = 0;
+	//Initialize the linked list 1 as an empty linked list
+	ll1.head = NULL;
+	ll1.size = 0;
 
-	// Initalize the stack as an empty stack
-	s.ll.head = NULL;
-	s.ll.size = 0;
+	//Initialize the linked list 2 as an empty linked list
+	ll2.head = NULL;
+	ll2.size = 0;
 
-	printf("1: Insert an integer into the linked list:\n");
-	printf("2: Create the stack from the linked list:\n");
-	printf("3: Remove even numbers from the stack:\n");
+	printf("1: Insert an integer to the linked list 1:\n");
+	printf("2: Insert an integer to the linked list 2:\n");
+	printf("3: Create the alternate merged linked list:\n");
 	printf("0: Quit:\n");
 
 	while (c != 0)
@@ -76,110 +64,64 @@ int main()
 		switch (c)
 		{
 		case 1:
-			printf("Input an integer that you want to add to the linked list: ");
+			printf("Input an integer that you want to add to the linked list 1: ");
 			scanf("%d", &i);
-			insertNode(&ll, ll.size, i);
-			printf("The resulting linked list is: ");
-			printList(&ll);
+			j = insertNode(&ll1, ll1.size, i);
+			printf("Linked list 1: ");
+			printList(&ll1);
 			break;
 		case 2:
-			createStackFromLinkedList(&ll, &s); // You need to code this function
-			printf("The resulting stack is: ");
-			printList(&(s.ll));
+			printf("Input an integer that you want to add to the linked list 2: ");
+			scanf("%d", &i);
+			j = insertNode(&ll2, ll2.size, i);
+			printf("Linked list 2: ");
+			printList(&ll2);
 			break;
 		case 3:
-			removeEvenValues(&s); // You need to code this function
-			printf("The resulting stack after removing even integers is: ");
-			printList(&(s.ll));
-			removeAllItemsFromStack(&s);
-			removeAllItems(&ll);
+		    printf("The resulting linked lists after merging the given linked list are:\n");
+			alternateMergeLinkedList(&ll1, &ll2); // You need to code this function
+			printf("The resulting linked list 1: ");
+			printList(&ll1);
+			printf("The resulting linked list 2: ");
+			printList(&ll2);
+			removeAllItems(&ll1);
+			removeAllItems(&ll2);
 			break;
 		case 0:
-			removeAllItemsFromStack(&s);
-			removeAllItems(&ll);
+			removeAllItems(&ll1);
+			removeAllItems(&ll2);
 			break;
 		default:
 			printf("Choice unknown;\n");
 			break;
 		}
-
 	}
-
 	return 0;
 }
 
-
 //////////////////////////////////////////////////////////////////////////////////
 
-void createStackFromLinkedList(LinkedList *ll, Stack *s)
+void alternateMergeLinkedList(LinkedList *ll1, LinkedList *ll2)
 {
-	removeAllItemsFromStack(s);
-	ListNode *current_node = ll->head;
-	while(current_node != NULL) {
-		push(s, current_node->item);
-		current_node = current_node->next;
+	ListNode *cur1 = ll1->head, *cur2 = ll2->head;
+
+	while(cur1 != NULL) {
+		if(cur2 == NULL) return;
+
+		ListNode *orig1_next = cur1->next;
+		ListNode *orig2_next = cur2->next;
+		cur1->next = cur2;
+		cur2->next = orig1_next;
+
+		cur2 = orig2_next;
+		ll2->head = cur2;
+		(ll2->size)--, (ll1->size)++;
+		cur1 = orig1_next;
 	}
     /* add your code here */
 }
 
-void removeEvenValues(Stack *s)
-{
-	Stack temp_stack = {0, NULL};
-
-
-	while(!isEmptyStack(s)){
-		int cur_val = pop(s);
-		if(cur_val %2 != 0)
-			push(&temp_stack, cur_val);
-	}
-	while(!isEmptyStack(&temp_stack)){
-		push(s, pop(&temp_stack));
-	}
-
-	
-}
-
-//////////////////////////////////////////////////////////////////////////////////
-
-void push(Stack *s, int item)
-{
-	insertNode(&(s->ll), 0, item);
-}
-
-int pop(Stack *s)
-{
-	int item;
-	if (s->ll.head != NULL)
-	{
-		item = ((s->ll).head)->item;
-		removeNode(&(s->ll), 0);
-		return item;
-	}
-	else
-		return MIN_INT;
-}
-
-int isEmptyStack(Stack *s)
-{
-	if ((s->ll).size == 0)
-		return 1;
-	else
-		return 0;
-}
-
-
-void removeAllItemsFromStack(Stack *s)
-{
-	if (s == NULL)
-		return;
-	while (s->ll.head != NULL)
-	{
-		pop(s);
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////
-
+///////////////////////////////////////////////////////////////////////////////////
 
 void printList(LinkedList *ll){
 
@@ -187,6 +129,7 @@ void printList(LinkedList *ll){
 	if (ll == NULL)
 		return;
 	cur = ll->head;
+
 	if (cur == NULL)
 		printf("Empty");
 	while (cur != NULL)
@@ -213,7 +156,7 @@ void removeAllItems(LinkedList *ll)
 }
 
 
-ListNode * findNode(LinkedList *ll, int index){
+ListNode *findNode(LinkedList *ll, int index){
 
 	ListNode *temp;
 
@@ -246,10 +189,6 @@ int insertNode(LinkedList *ll, int index, int value){
 	if (ll->head == NULL || index == 0){
 		cur = ll->head;
 		ll->head = malloc(sizeof(ListNode));
-		if (ll->head == NULL)
-		{
-			exit(0);
-		}
 		ll->head->item = value;
 		ll->head->next = cur;
 		ll->size++;
@@ -262,10 +201,6 @@ int insertNode(LinkedList *ll, int index, int value){
 	if ((pre = findNode(ll, index - 1)) != NULL){
 		cur = pre->next;
 		pre->next = malloc(sizeof(ListNode));
-		if (pre->next == NULL)
-		{
-			exit(0);
-		}
 		pre->next->item = value;
 		pre->next->next = cur;
 		ll->size++;
@@ -290,6 +225,7 @@ int removeNode(LinkedList *ll, int index){
 		free(ll->head);
 		ll->head = cur;
 		ll->size--;
+
 		return 0;
 	}
 
