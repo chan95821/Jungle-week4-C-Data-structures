@@ -15,14 +15,13 @@ typedef struct _listnode
 {
 	int item;
 	struct _listnode *next;
-} ListNode;			// You should not change the definition of ListNode
+} ListNode; // You should not change the definition of ListNode
 
 typedef struct _linkedlist
 {
 	int size;
 	ListNode *head;
-} LinkedList;			// You should not change the definition of LinkedList
-
+} LinkedList; // You should not change the definition of LinkedList
 
 //////////////////////// function prototypes /////////////////////////////////////
 
@@ -31,10 +30,9 @@ void RecursiveReverse(ListNode **ptrHead);
 
 void printList(LinkedList *ll);
 void removeAllItems(LinkedList *ll);
-ListNode * findNode(LinkedList *ll, int index);
+ListNode *findNode(LinkedList *ll, int index);
 int insertNode(LinkedList *ll, int index, int value);
 int removeNode(LinkedList *ll, int index);
-
 
 //////////////////////////// main() //////////////////////////////////////////////
 
@@ -43,10 +41,9 @@ int main()
 	LinkedList ll;
 	int c, i, j;
 	c = 1;
-	//Initialize the linked list 1 as an empty linked list
+	// Initialize the linked list 1 as an empty linked list
 	ll.head = NULL;
 	ll.size = 0;
-
 
 	printf("1: Insert an integer to the linked list:\n");
 	printf("2: Reversed the linked list:\n");
@@ -89,27 +86,26 @@ void RecursiveReverse(ListNode **ptrHead)
 {
 	/* add your code here */
 
-	if((*ptrHead)->next == NULL) return;
+	if ((*ptrHead) == NULL || (*ptrHead)->next == NULL)
+		return;
 
 	ListNode *first_one = *ptrHead;
-	ListNode *next_one = first_one->next;
-	// ListNode *last_one= first_one; -> next_one 포인터가 재귀 호출 뒤 헤드로 바뀌어 버리므로 last_one과 같은 것을 가리킨다.
-	// while(last_one->next != NULL){
-	// 	last_one = last_one->next;
-	// }
-	ListNode *next_to_link = next_one;
+	ListNode *original_next = first_one->next;
+
+	ListNode *sub_call_head = original_next;
 	first_one->next = NULL;
-	
-	RecursiveReverse(&next_one); // next_one 포인터를 아예 바꿔 버리므로, next_to_link 복사본 필요
 
-	next_to_link->next = first_one;
+	RecursiveReverse(&sub_call_head); // 이후 sub_call_head는 하위 변경된 리스트의 헤드이다.
 
-	*ptrHead = next_one; // -> 의미가 바뀌어버리니, 이름 자체가 부적절.
+	original_next->next = first_one;
+
+	*ptrHead = sub_call_head;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void printList(LinkedList *ll){
+void printList(LinkedList *ll)
+{
 
 	ListNode *cur;
 	if (ll == NULL)
@@ -126,7 +122,8 @@ void printList(LinkedList *ll){
 	printf("\n");
 }
 
-ListNode * findNode(LinkedList *ll, int index){
+ListNode *findNode(LinkedList *ll, int index)
+{
 
 	ListNode *temp;
 
@@ -138,7 +135,8 @@ ListNode * findNode(LinkedList *ll, int index){
 	if (temp == NULL || index < 0)
 		return NULL;
 
-	while (index > 0){
+	while (index > 0)
+	{
 		temp = temp->next;
 		if (temp == NULL)
 			return NULL;
@@ -148,7 +146,8 @@ ListNode * findNode(LinkedList *ll, int index){
 	return temp;
 }
 
-int insertNode(LinkedList *ll, int index, int value){
+int insertNode(LinkedList *ll, int index, int value)
+{
 
 	ListNode *pre, *cur;
 
@@ -156,7 +155,8 @@ int insertNode(LinkedList *ll, int index, int value){
 		return -1;
 
 	// If empty list or inserting first node, need to update head pointer
-	if (ll->head == NULL || index == 0){
+	if (ll->head == NULL || index == 0)
+	{
 		cur = ll->head;
 		ll->head = malloc(sizeof(ListNode));
 		ll->head->item = value;
@@ -165,10 +165,10 @@ int insertNode(LinkedList *ll, int index, int value){
 		return 0;
 	}
 
-
 	// Find the nodes before and at the target position
 	// Create a new node and reconnect the links
-	if ((pre = findNode(ll, index - 1)) != NULL){
+	if ((pre = findNode(ll, index - 1)) != NULL)
+	{
 		cur = pre->next;
 		pre->next = malloc(sizeof(ListNode));
 		pre->next->item = value;
@@ -180,8 +180,8 @@ int insertNode(LinkedList *ll, int index, int value){
 	return -1;
 }
 
-
-int removeNode(LinkedList *ll, int index){
+int removeNode(LinkedList *ll, int index)
+{
 
 	ListNode *pre, *cur;
 
@@ -190,7 +190,8 @@ int removeNode(LinkedList *ll, int index){
 		return -1;
 
 	// If removing first node, need to update head pointer
-	if (index == 0){
+	if (index == 0)
+	{
 		cur = ll->head->next;
 		free(ll->head);
 		ll->head = cur;
@@ -201,7 +202,8 @@ int removeNode(LinkedList *ll, int index){
 
 	// Find the nodes before and after the target position
 	// Free the target node and reconnect the links
-	if ((pre = findNode(ll, index - 1)) != NULL){
+	if ((pre = findNode(ll, index - 1)) != NULL)
+	{
 
 		if (pre->next == NULL)
 			return -1;
@@ -221,7 +223,8 @@ void removeAllItems(LinkedList *ll)
 	ListNode *cur = ll->head;
 	ListNode *tmp;
 
-	while (cur != NULL){
+	while (cur != NULL)
+	{
 		tmp = cur->next;
 		free(cur);
 		cur = tmp;
