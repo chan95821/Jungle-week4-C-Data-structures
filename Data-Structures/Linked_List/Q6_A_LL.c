@@ -101,7 +101,7 @@ int moveMaxToFront(ListNode **ptrHead) // 헤드도 조작해야 해서
 		prev = cur;
 		cur = cur->next;
 	}
-	if (max_prev_node == max_node)
+	if (max_prev_node == max_node) // 첫 iteration이면 prev와 cur이 같다 / 또는 LL 비었을 때도 이 조건에 걸린다
 		return 0; // return 값 쓰는데가 없다.  idx라면, idx 변수 도입 필요
 
 	ListNode *max_next_node = max_node->next;

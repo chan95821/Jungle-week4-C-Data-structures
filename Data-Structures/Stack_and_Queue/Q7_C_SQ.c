@@ -125,7 +125,7 @@ int balanced(char *expression)
 			push(&s, c);
 			break;
 		case '}':
-			if (pop(&s) != '{') // pop시 스택이 비었을 때 INT_MIN 반환하므로 조건에 같이 걸린다. 더 고려할 필요 없다.
+			if (pop(&s) != '{') // pop시 스택이 비었을 때 MIN_INT(-1000) 반환하므로 조건에 같이 걸린다. 더 고려할 필요 없다.
 				return false;
 			else
 				break;
@@ -144,8 +144,12 @@ int balanced(char *expression)
 	}
 	if (isEmptyStack(&s))
 		return true;
-	else
+	else // stack pop 안하면 누수
+	{
+		removeAllItemsFromStack(&s);
 		return false;
+	}
+
 }
 
 ////////////////////////////////////////////////////////////

@@ -89,25 +89,53 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void postOrderIterativeS1(BSTNode *root)
+void postOrderIterativeS1(BSTNode *root) // ㅗ
 {
 
-	if(root == NULL) {
+	if (root == NULL)
+	{
 		return;
 	}
 	/* add your code here */
 	Stack *s = malloc(sizeof(Stack));
 	BSTNode *cur = root;
-	while(cur != NULL) {
-		push(s, cur);
-		cur = cur->left;
-	}
-	while(!isEmpty(s)) {
-		cur = pop(s);
-		
+	BSTNode *prev_processed = root;
+	push(s, root);
+	while (!isEmpty(s))
+	{ // push시 항상 자식만 넣는다. // prev processed는 상위노드이거나 / 자식인 경우  
+		cur = peek(s);
+		// prev_processed 부터 먼저 케이스 분리하기
+		if (prev_processed != cur->left && prev_processed != cur->right) //prev_processed는 항상 NULL아니다.
+		{
+			if (cur->left != NULL) // left 있는데 prev 아니므로, left가 처리 안됨
+				push(s, cur->left);
+			else if (cur->right != NULL) // left 없고 right 있는데 prev 아니므로, right 처리 안됨
+				push(s, cur->right);
+			else // 둘다 없으니 바로 pop
+			{
+				printf("%d ", cur->item);
+				pop(s);
+			}
+		}
+		else if (prev_processed == cur->left)
+		{
+			if (cur->right != NULL) //right 탐색
+				push(s, cur->right);
+			else
+			{
+				printf("%d ", cur->item);
+				pop(s);
+			}
+		}
+		else // cur->right인 경우만 남음
+		{
+			printf("%d ", cur->item);
+			pop(s);
+		}
 
-
+		prev_processed = cur;
 	}
+
 	free(s);
 }
 

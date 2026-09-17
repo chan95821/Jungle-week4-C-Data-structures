@@ -86,7 +86,7 @@ void RecursiveReverse(ListNode **ptrHead)
 {
 	/* add your code here */
 
-	if ((*ptrHead) == NULL || (*ptrHead)->next == NULL)
+	if ((*ptrHead) == NULL || (*ptrHead)->next == NULL) // 0, 1개인 경우
 		return;
 
 	ListNode *first_one = *ptrHead;
@@ -94,7 +94,7 @@ void RecursiveReverse(ListNode **ptrHead)
 
 	ListNode *sub_call_head = original_next;
 	first_one->next = NULL;
-
+	
 	RecursiveReverse(&sub_call_head); // 이후 sub_call_head는 하위 변경된 리스트의 헤드이다.
 
 	original_next->next = first_one;

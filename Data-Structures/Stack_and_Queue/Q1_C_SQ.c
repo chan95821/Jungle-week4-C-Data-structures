@@ -229,7 +229,7 @@ ListNode * findNode(LinkedList *ll, int index){
 int insertNode(LinkedList *ll, int index, int value){
 
 	ListNode *pre, *cur;
-
+	
 	if (ll == NULL || index < 0 || index > ll->size + 1)
 		return -1;
 
